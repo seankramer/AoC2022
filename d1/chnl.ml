@@ -20,7 +20,6 @@ let rec split_while_unq (l : int list) (acc : int list) ~(f : int -> bool) :
           let n_acc = List.append acc [hd] in
           split_while_unq rest n_acc ~f
         else
-          let () = printf "discard\n%!" in
           acc, rest
       end
 
