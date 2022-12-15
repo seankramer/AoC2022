@@ -1,4 +1,3 @@
-open Printf
 open Core
 
 let test str = printf "%s\n%!" str
@@ -11,19 +10,22 @@ let cvt_to_int (s : string) : int =
   let is_mpty = String.is_empty s in
   if is_mpty then -1 else Int.of_string s
 
-let rec split_while_unq (l : int list) (acc : int list) (f : int -> bool): int list * int list =
+let rec split_while_unq (l : int list) (acc : int list) ~(f : int -> bool) :
+  int list * int list =
   match l with
-  | [] ->
+  | [] -> acc, l
+    (*
       begin
         let () = printf "done\n%!" in
         acc, l
       end
+    *)
   | hd :: rest ->
       begin
         if f hd then
-          let () = printf "keep: %d\n%!" hd in
+          (* let () = printf "keep: %d\n%!" hd in *)
           let n_acc = List.append acc [hd] in
-          split_while_unq rest n_acc f
+          split_while_unq rest n_acc ~f
         else
           let () = printf "discard\n%!" in
           acc, rest
@@ -34,9 +36,22 @@ let rec chunk_lst (l : int list) (acc : int list list) : int list list =
   | [] -> List.rev acc
   | _ ->
       begin
-        let chunk, rest = split_while_unq l [] Int.is_positive in
+        let chunk, rest = split_while_unq l [] ~f:Int.is_positive in
         let newer_acc = chunk :: acc in
         chunk_lst rest newer_acc
+      end
+
+let rec ttl_sum (l : int list) : int =
+  match l with
+  | [] -> 0
+  | hd :: rest -> hd + ttl_sum rest
+
+let rec mx_val (l : int list) (acc : int) : int =
+  match l with
+  | [] -> acc
+  | hd :: rest ->
+      begin
+        let n_acc = if hd > acc then hd else acc in mx_val rest n_acc
       end
 
 let rd_input (fname : string) : string =
@@ -50,6 +65,16 @@ let rd_input (fname : string) : string =
   let num_val = List.map lst_line ~f:cvt_to_int in
   let acc = [] in
   let rez = chunk_lst num_val acc in
+  let ttl = List.map rez ~f:(fun sslst -> ttl_sum sslst) in
+  let mx_v = mx_val ttl 0 in
+  let _ = printf "%d\n%!" mx_v
+
+(*
+  let _ = List.iter ttl ~f:(
+        fun p -> printf "%d\n%!" p
+    )
+
+
   let _ = List.iter rez ~f:(
       fun slst ->
         let () = List.iter slst ~f:(
@@ -57,11 +82,12 @@ let rd_input (fname : string) : string =
         in
         print_endline ""
     )
+*)
   in
   ""
 
 let () =
   test "testing, testing";
-  let _ = rd_input "num.txt" in
+  let _ = rd_input "input.txt" in
   ()
 
