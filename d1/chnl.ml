@@ -49,33 +49,12 @@ let rec mx_val (l : int list) (acc : int) : int =
 let rd_input (fname : string) : string =
   let doc = In_channel.read_all fname in
   let lst_line = String.split_lines doc in
-(*
-  let _ = List.iter lst_line ~f:(fun str -> printf "%s|\n%!" str) in
-  let stripped_lines = List.map lst_line ~f:strip_str in
-  let _ = List.iter stripped_lines ~f:(fun str -> printf "%s|\n%!" str) in
-*)
   let num_val = List.map lst_line ~f:cvt_to_int in
   let acc = [] in
   let rez = chunk_lst num_val acc in
   let ttl = List.map rez ~f:(fun sslst -> ttl_sum sslst) in
   let mx_v = mx_val ttl 0 in
-  let _ = printf "part 1 solution: %d\n%!" mx_v
-
-(*
-  let _ = List.iter ttl ~f:(
-        fun p -> printf "%d\n%!" p
-    )
-
-
-  let _ = List.iter rez ~f:(
-      fun slst ->
-        let () = List.iter slst ~f:(
-            fun n -> printf "%d, %!" n)
-        in
-        print_endline ""
-    )
-*)
-  in
+  let _ = printf "part 1 solution: %d\n%!" mx_v in
   ""
 
 let () =
