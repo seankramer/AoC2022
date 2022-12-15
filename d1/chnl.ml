@@ -11,7 +11,7 @@ let cvt_to_int (s : string) : int =
   let is_mpty = String.is_empty s in
   if is_mpty then -1 else Int.of_string s
 
-let rec split_while_pos (l : int list) (acc : int list) : int list * int list =
+let rec split_while_unq (l : int list) (acc : int list) (f : int -> bool): int list * int list =
   match l with
   | [] ->
       begin
@@ -20,10 +20,10 @@ let rec split_while_pos (l : int list) (acc : int list) : int list * int list =
       end
   | hd :: rest ->
       begin
-        if Int.is_positive hd then
+        if f hd then
           let () = printf "keep: %d\n%!" hd in
           let n_acc = List.append acc [hd] in
-          split_while_pos rest n_acc
+          split_while_unq rest n_acc f
         else
           let () = printf "discard\n%!" in
           acc, rest
@@ -34,7 +34,7 @@ let rec chunk_lst (l : int list) (acc : int list list) : int list list =
   | [] -> List.rev acc
   | _ ->
       begin
-        let chunk, rest = split_while_pos l [] in
+        let chunk, rest = split_while_unq l [] Int.is_positive in
         let newer_acc = chunk :: acc in
         chunk_lst rest newer_acc
       end
@@ -58,9 +58,6 @@ let rd_input (fname : string) : string =
         print_endline ""
     )
   in
-(*
-  let _ = List.iter num_val ~f:(fun it -> printf "%d\n%!" it) in
-*)
   ""
 
 let () =
