@@ -14,16 +14,9 @@ let rec split_while_unq (l : int list) (acc : int list) ~(f : int -> bool) :
   int list * int list =
   match l with
   | [] -> acc, l
-    (*
-      begin
-        let () = printf "done\n%!" in
-        acc, l
-      end
-    *)
   | hd :: rest ->
       begin
         if f hd then
-          (* let () = printf "keep: %d\n%!" hd in *)
           let n_acc = List.append acc [hd] in
           split_while_unq rest n_acc ~f
         else
@@ -67,7 +60,7 @@ let rd_input (fname : string) : string =
   let rez = chunk_lst num_val acc in
   let ttl = List.map rez ~f:(fun sslst -> ttl_sum sslst) in
   let mx_v = mx_val ttl 0 in
-  let _ = printf "%d\n%!" mx_v
+  let _ = printf "part 1 solution: %d\n%!" mx_v
 
 (*
   let _ = List.iter ttl ~f:(
@@ -87,7 +80,7 @@ let rd_input (fname : string) : string =
   ""
 
 let () =
-  test "testing, testing";
+  test "2022 Advent of Code, Day 1";
   let _ = rd_input "input.txt" in
   ()
 
