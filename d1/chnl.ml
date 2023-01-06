@@ -3,8 +3,7 @@ open Core
 let test str = printf "%s\n%!" str
 
 let strip_str (s: string) : string =
-  let sstr = String.strip s in
-  sstr
+  let sstr = String.strip s in sstr
 
 let cvt_to_int (s : string) : int =
   let is_mpty = String.is_empty s in
@@ -53,6 +52,8 @@ let rd_input (fname : string) : string =
   let acc = [] in
   let rez = chunk_lst num_val acc in
   let ttl = List.map rez ~f:(fun sslst -> ttl_sum sslst) in
+  let srt_ttl = List.rev (List.sort ttl ~compare) in
+  let ptsum = List.iter srt_ttl ~f:(fun rlst -> printf "%d\n%!" rlst) in
   let mx_v = mx_val ttl 0 in
   let _ = printf "part 1 solution: %d\n%!" mx_v in
   ""
