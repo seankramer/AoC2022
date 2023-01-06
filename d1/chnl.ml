@@ -53,7 +53,7 @@ let rd_input (fname : string) : string =
   let rez = chunk_lst num_val acc in
   let ttl = List.map rez ~f:(fun sslst -> ttl_sum sslst) in
   let srt_ttl = List.rev (List.sort ttl ~compare) in
-  let ptsum = List.iter srt_ttl ~f:(fun rlst -> printf "%d\n%!" rlst) in
+  (*let ptsum = List.iter srt_tl ~f:(fun rlst -> printf "%d\n%!" rlst) in*)
   let mx_v = mx_val ttl 0 in
   let _ = printf "part 1 solution: %d\n%!" mx_v in
   ""
